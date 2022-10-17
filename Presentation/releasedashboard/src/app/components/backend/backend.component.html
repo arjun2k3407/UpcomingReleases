@@ -1,0 +1,176 @@
+<div class="shadow card-group mb-5">
+    <div class="shadow rounded-3 card text-white bg-dark">
+        <div class="shadow card-header">
+            <h4>ITE1</h4>
+        </div>
+        <div class="shadow card-body">
+            <h6 class="card-subtitle mb-4">SQL to point backend to ITE1. **This is DEV only</h6>
+            <p class="card-text">
+                UPDATE <br>
+                    premier_owner.spcs_mq_mgr_cfgrn_prmtr <br>
+                SET <br>
+                    mq_mgr_act_indcr='N' ;<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_mq_mgr_cfgrn_prmtr <br>
+                SET<br>
+                    mq_mgr_act_indcr='Y' <br>
+                WHERE <br>
+                    mq_mgr_nme='RET01A1T';<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_code_cfgrn_lookup <br>
+                SET <br>
+                    code_valu_txt='EAITest|Uat1EppNPci|Uat1EppPci' <br>
+                WHERE<br>
+                    code_nme='AMDOCS_RECIPIENT_NAMES';<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_code_cfgrn_lookup <br>
+                SET <br>
+                    code_valu_txt='Uat1EppPci' <br>
+                WHERE <br>
+                    code_nme='payment.epp.pci.peer.name';<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_code_cfgrn_lookup <br>
+                SET <br>
+                    code_valu_txt='Uat1EppNPci' <br>
+                WHERE <br>
+                    code_nme='payment.epp.peer.name';<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_code_cfgrn_lookup <br>
+                SET <br>
+                    code_valu_txt='Uat1EppPci' <br>
+                WHERE <br>
+                    code_nme='payment.epp.peer.name.EPPPCIPeerType'<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_code_cfgrn_lookup <br>
+                SET <br>
+                    code_valu_txt='Uat1EppNPci' <br>
+                WHERE <br>
+                    code_nme='payment.epp.peer.name.EPPPeerType'; <br>
+                COMMIT;<br>
+                <br>
+            </p>
+        </div>
+    </div>
+    <div class="shadow rounded-3 card bg-warning">
+        <div class="shadow card-header">
+            <h4>ITE2</h4>
+        </div>
+        <div class="card-body">
+            <h6 class="card-subtitle mb-4">SQL to point backend to ITE2. **This is DEV only</h6>
+            <p class="card-text">
+                UPDATE <br>
+                    premier_owner.spcs_mq_mgr_cfgrn_prmtr <br>
+                SET <br>
+                    mq_mgr_act_indcr='N' ;<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_mq_mgr_cfgrn_prmtr <br>
+                SET<br>
+                    mq_mgr_act_indcr='Y' <br>
+                WHERE <br>
+                    mq_mgr_nme='RET01A2T';<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_code_cfgrn_lookup <br>
+                SET <br>
+                    code_valu_txt='EAITest|Uat2EppNPci|Uat2EppPci' <br>
+                WHERE<br>
+                    code_nme='AMDOCS_RECIPIENT_NAMES';<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_code_cfgrn_lookup <br>
+                SET <br>
+                    code_valu_txt='Uat2EppPci' <br>
+                WHERE <br>
+                    code_nme='payment.epp.pci.peer.name';<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_code_cfgrn_lookup <br>
+                SET <br>
+                    code_valu_txt='Uat2EppNPci' <br>
+                WHERE <br>
+                    code_nme='payment.epp.peer.name';<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_code_cfgrn_lookup <br>
+                SET <br>
+                    code_valu_txt='Uat2EppPci' <br>
+                WHERE <br>
+                    code_nme='payment.epp.peer.name.EPPPCIPeerType'<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_code_cfgrn_lookup <br>
+                SET <br>
+                    code_valu_txt='Uat2EppNPci' <br>
+                WHERE <br>
+                    code_nme='payment.epp.peer.name.EPPPeerType'; <br>
+                COMMIT;<br>
+                <br>
+            </p>
+        </div>
+    </div>
+    <div class="shadow rounded-3 card text-white bg-info">
+        <div class="shadow card-header">
+            <h4>ITE3</h4>
+        </div>
+        <div class="card-body">
+            <h6 class="card-subtitle mb-4">SQL to point backend to ITE3. **This is DEV only</h6>
+            <p class="card-text">
+                UPDATE <br>
+                    premier_owner.spcs_mq_mgr_cfgrn_prmtr <br>
+                SET <br>
+                    mq_mgr_act_indcr='N' ;<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_mq_mgr_cfgrn_prmtr <br>
+                SET<br>
+                    mq_mgr_act_indcr='Y' <br>
+                WHERE <br>
+                    mq_mgr_nme='RET01IT3';<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_code_cfgrn_lookup <br>
+                SET <br>
+                    code_valu_txt='EAITest|Uat4EppNPci|Uat4EppPci' <br>
+                WHERE<br>
+                    code_nme='AMDOCS_RECIPIENT_NAMES';<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_code_cfgrn_lookup <br>
+                SET <br>
+                    code_valu_txt='Uat4EppPci' <br>
+                WHERE <br>
+                    code_nme='payment.epp.pci.peer.name';<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_code_cfgrn_lookup <br>
+                SET <br>
+                    code_valu_txt='Uat4EppNPci' <br>
+                WHERE <br>
+                    code_nme='payment.epp.peer.name';<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_code_cfgrn_lookup <br>
+                SET <br>
+                    code_valu_txt='Uat4EppPci' <br>
+                WHERE <br>
+                    code_nme='payment.epp.peer.name.EPPPCIPeerType'<br>
+                    <br>
+                UPDATE <br>
+                    premier_owner.spcs_code_cfgrn_lookup <br>
+                SET <br>
+                    code_valu_txt='Uat4EppNPci' <br>
+                WHERE <br>
+                    code_nme='payment.epp.peer.name.EPPPeerType'; <br>
+                COMMIT;<br>
+                <br>
+            </p>
+        </div>
+    </div>
+</div>

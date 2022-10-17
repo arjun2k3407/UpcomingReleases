@@ -1,0 +1,63 @@
+<h5 *ngIf="!loaded; else releaseTemplate" [class.bg-moon]="darkMode">Loading...</h5>
+<div *ngIf="loaded &&  releases?.length === 0">
+    <h5>There is no upcoming releases</h5>
+</div>
+<ng-template #releaseTemplate>
+    <div class="row" [class.bg-moon]="darkMode">
+        <div class="col-md-6">
+            <a [routerLink]="[redirectHome]" routerLinkActive="router-link-active" class="btn text-magenta">
+                <i class="fa fa-arrow-circle-o-left"></i> Back to Home
+            </a>
+        </div>
+        <h2>Upcoming Releases - <span *ngIf="app == 'rms'">RMS</span><span *ngIf="app == 'rtt'">RTT</span><span *ngIf="app == 'ra'">RA</span></h2>
+    </div>
+    <hr>
+    <ul class="list-unstyled mb-5" [class.bg-moon]="darkMode" *ngIf="loaded && releases?.length > 0">
+        <li class="shadow card card-body rounded-3 mb-2" *ngFor="let rel of releases"
+            [ngClass]="{'bg-white': !rel.prodLike && !darkMode, 'bg-light': rel.prodLike && !darkMode, 'bg-moon-card': darkMode && !rel.prodLike, 'bg-moon-comp': darkMode && rel.prodLike, 'text-light': darkMode}">
+            <h4>{{ rel.citrixId }} <span [ngClass]="{'text-success': !darkMode, 'text-info': darkMode}"
+                    *ngIf="rel.prodLike">- [Prod Like] </span>
+                <div class="float-end">
+                    <a [routerLink]="[redirect+rel.id]" routerLinkActive="router-link-active"
+                        class="shadow btn text-light btn-sm rounded-pill" [class.btn-success]="darkMode"
+                        [class.btn-magenta]="!darkMode">
+                        <i class="fa fa-arrow-circle-o-right"></i> Details
+                    </a><span *ngIf="isEditable" [class.text-light]="darkMode" [class.text-danger]="!darkMode">&nbsp;<i
+                            (click)="onDelete(rel)" class="fa fa-trash-o"></i></span>
+                </div>
+            </h4>
+            <ul class="list-group rounded-3">
+                <li class="list-group-item rounded-3"
+                    [ngClass]="{'bg-moon-comp': darkMode && !rel.prodLike, 'bg-moon-card': darkMode && rel.prodLike, 'text-light': darkMode, 'bg-light': !rel.prodLike && !darkMode, 'bg-white': rel.prodLike && !darkMode}">
+                    <div class="d-flex">
+                        <div>
+                            Description:<span [ngClass]="{'text-warning': darkMode, 'text-magenta': !darkMode}"> {{
+                                rel.name }} </span>
+                            <i class="fa fa-comment" [ngClass]="{'text-light': darkMode, 'text-secondary': !darkMode}"
+                                *ngIf="rel.comments" ngbTooltip="{{ rel.comments }}"></i>
+                        </div>
+                        <div class="ms-auto">
+                            <i class="fa fa-calendar"></i> : {{ rel.date | date:"longDate" }}
+                        </div>
+                    </div>
+
+                </li>
+                <li class="list-group-item rounded-3"
+                    [ngClass]="{'bg-moon-comp': darkMode && !rel.prodLike, 'bg-moon-card': darkMode && rel.prodLike, 'text-light': darkMode, 'bg-light': !rel.prodLike && !darkMode, 'bg-white': rel.prodLike && !darkMode}">
+                    <div class="d-flex">
+                        <div>
+                            Dev Environment: {{ rel.devInstance !=null ? rel.devInstance : "N/A" }}
+                        </div>
+                        <div class="ms-auto">
+                            QA Environment: {{ rel.testInstance !=null ? rel.testInstance : "N/A" }}
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item rounded-3"
+                    *ngIf="app != 'ra'"
+                    [ngClass]="{'bg-moon-comp': darkMode && !rel.prodLike, 'bg-moon-card': darkMode && rel.prodLike, 'text-light': darkMode, 'bg-light': !rel.prodLike && !darkMode, 'bg-white': rel.prodLike && !darkMode}">
+                    Backend: {{ rel.backend != null ? rel.backend : "N/A" }}</li>
+            </ul>
+        </li>
+    </ul>
+</ng-template>

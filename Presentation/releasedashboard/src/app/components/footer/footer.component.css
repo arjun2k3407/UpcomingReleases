@@ -1,0 +1,14 @@
+.copyright {
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    height: 30px;
+    width: 100%;
+    margin-top: 5px;
+    z-index: 9;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.bg-magenta {
+    background-color: #e20074;;
+}

@@ -1,0 +1,406 @@
+<div class="row" [class.bg-moon]="darkMode">
+    <div class="col-md-6">
+        <a [routerLink]="[redirect]" routerLinkActive="router-link-active"  class="btn text-magenta">
+            <i class="fa fa-arrow-circle-o-left"></i> {{ linkVerbiage }}
+        </a>
+    </div>
+    <div class="col-md-6">
+        
+    </div>
+</div>
+<hr>
+<div class="shadow card rounded-3 mb-5" [class.bg-moon-card]="darkMode">
+    <div class="shadow rounded-3 card card-header bg-magenta text-light rounded-3">
+        <h3>Add new release</h3>
+    </div>
+    <div class="shadow card-body rounded-3" [class.bg-moon-card]="darkMode">
+        <form #releaseForm="ngForm" (ngSubmit)="onSubmit(releaseForm)">
+            <div class="form-group mb-3">
+                <label for="citrixId"><span *ngIf="app == 'rms'">Citrix Icon</span><span *ngIf="app != 'rms'">Project</span> Name</label>
+                <input 
+                    type="text" 
+                    class="shadow rounded-pill form-control"
+                    placeholder="eg: 21_12_500 or PR Name and Description"
+                    name="citrixId" 
+                    id="citrixId"
+                    #releaseCitrixId="ngModel"
+                    [(ngModel)]="release.citrixId"
+                    [ngClass]="{'is-invalid': releaseCitrixId.errors && releaseCitrixId.touched, 'bg-moon-card': darkMode}"
+                    minlength="5"
+                    required
+                >
+                <div [hidden]="!releaseCitrixId.errors?.required" class="invalid-feedback" *ngIf="app == 'rms'">
+                    Citrix icon name required
+                </div>
+                <div [hidden]="!releaseCitrixId.errors?.required" class="invalid-feedback" *ngIf="app != 'rms'">
+                    Project name required
+                </div>
+                <div [hidden]="!releaseCitrixId.errors?.minlength" class="invalid-feedback" >
+                    Must be at least 5 characters
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="citrixId">Release Name</label>
+                <input 
+                    type="text" 
+                    class="shadow rounded-pill form-control"
+                    placeholder="eg: January Release"
+                    name="name" 
+                    id="name"
+                    #releaseName="ngModel"
+                    [(ngModel)]="release.name"
+                    [ngClass]="{'is-invalid': releaseName.errors && releaseName.touched, 'bg-moon-card': darkMode}"
+                    minlength="2"
+                    required
+                >
+                <div [hidden]="!releaseName.errors?.required" class="invalid-feedback" >
+                    Release name required
+                </div>
+                <div [hidden]="!releaseName.errors?.minlength" class="invalid-feedback" >
+                    Must be at least 2 characters
+                </div>
+            </div>
+            <div class="form-group mb-3" >
+                <label for="date">Release Date</label>
+                <div class="input-group">
+                    <input 
+                        class="shadow rounded-pill form-control" 
+                        placeholder="yyyy-mm-dd"
+                        name="date"
+                        id="date" 
+                        #releaseDate="ngModel"
+                        [(ngModel)]="selectedDate" 
+                        [ngClass]="{'is-invalid': releaseDate.errors && releaseDate.touched, 'bg-moon-card': darkMode}"
+                        ngbDatepicker
+                        #d="ngbDatepicker"
+                        required
+                    >
+                    <div class="input-group-append">
+                        <button 
+                            class="shadow rounded-pill btn calendar"
+                            [ngClass]="{'btn-outline-secondary': !darkMode, 'btn-outline-light': darkMode}"
+                            (click)="d.toggle()" 
+                            type="button"
+                        >
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div [hidden]="!releaseDate.invalid" class="invalid-feedback" >
+                    Date is required
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="backend">Back End</label>
+                <select 
+                    class="shadow rounded-pill form-control form-select"
+                    [ngClass]="{'bg-moon-card': darkMode, 'arrow-white': darkMode}"
+                    name="backend" 
+                    id="backend" 
+                    [(ngModel)]="release.backend"
+                    #releaseBackend="ngModel"
+                >
+                    <option></option>
+                    <option *ngFor="let backEnd of backEnds" value="{{ backEnd }}">{{ backEnd }}</option>
+                </select>
+            </div>
+            <div class="form-group mb-3">
+                <label for="dev">Dev Environment</label>
+                <select 
+                    class="shadow rounded-pill form-select form-control"
+                    [ngClass]="{'bg-moon-card': darkMode, 'arrow-white': darkMode}"
+                    name="dev" 
+                    id="dev" 
+                    [(ngModel)]="release.devInstance"
+                    #releaseDev="ngModel"
+                >
+                    <option></option>
+                    <option *ngFor="let devInstance of devInstances" value="{{ devInstance }}">{{ devInstance }}</option>
+                </select>
+            </div>
+            <div class="form-group mb-3">
+                <label for="test">Test Environment</label>
+                <select 
+                    class="shadow rounded-pill form-select form-control"
+                    [ngClass]="{'bg-moon-card': darkMode, 'arrow-white': darkMode}"
+                    name="test" 
+                    id="test" 
+                    [(ngModel)]="release.testInstance"
+                    #releaseDev="ngModel"
+                >
+                    <option></option>
+                    <option *ngFor="let testInstance of testInstances" value="{{ testInstance }}">{{ testInstance }}</option>
+                </select>
+            </div>
+            <div class="shadow card mb-3 rounded-3" [class.bg-moon-card]="darkMode">
+                <label for="branches" class="card-header rounded-3 bg-secondary text-light">GIT Branch Details</label>
+                <div id="branches" name="branches" class="card-body rounded-3" *ngIf="app == 'rtt'">
+                    <div class="form-group mb-3">
+                        <label for="rtt_xapi">xApi</label>
+                        <input 
+                            type="text" 
+                            class="shadow rounded-pill form-control"
+                            placeholder="eg: tmo/mvp1"
+                            name="rtt_xapi" 
+                            id="rtt_xapi"
+                            #releaseRttXapi="ngModel"
+                            [(ngModel)]="release.branch.rtt_xapi"
+                            [ngClass]="{'is-invalid': releaseRttXapi.errors && releaseRttXapi.touched, 'bg-moon-card': darkMode}"
+                            minlength="2"
+                            required
+                        >
+                        <div [hidden]="!releaseRttXapi.errors?.required" class="invalid-feedback" >
+                            xApi branch name is required
+                        </div>
+                        <div [hidden]="!releaseRttXapi.errors?.minlength" class="invalid-feedback" >
+                            Must be at least 2 characters
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="ws">iOS</label>
+                        <input 
+                            type="text" 
+                            class="shadow rounded-pill form-control"
+                            placeholder="eg: tmo/mvp1"
+                            name="rtt_ios" 
+                            id="rtt_ios"
+                            #releaseRttIos="ngModel"
+                            [(ngModel)]="release.branch.rtt_ios"
+                            [ngClass]="{'is-invalid': releaseRttIos.errors && releaseRttIos.touched, 'bg-moon-card': darkMode}"
+                            minlength="2"
+                            required
+                        >
+                        <div [hidden]="!releaseRttIos.errors?.required" class="invalid-feedback" >
+                            iOS branch name is required
+                        </div>
+                        <div [hidden]="!releaseRttIos.errors?.minlength" class="invalid-feedback" >
+                            Must be at least 2 characters
+                        </div>
+                    </div>
+                </div>
+                <div id="branches" name="branches" class="card-body rounded-3" *ngIf="app == 'ra'">
+                    <div class="form-group mb-3">
+                        <label for="ws">iOS</label>
+                        <input 
+                            type="text" 
+                            class="shadow rounded-pill form-control"
+                            placeholder="eg: tmo/mvp1"
+                            name="ra_ios" 
+                            id="ra_ios"
+                            #releaseRaIos="ngModel"
+                            [(ngModel)]="release.branch.ra_ios"
+                            [ngClass]="{'is-invalid': releaseRaIos.errors && releaseRaIos.touched, 'bg-moon-card': darkMode}"
+                            minlength="2"
+                            required
+                        >
+                        <div [hidden]="!releaseRaIos.errors?.required" class="invalid-feedback" >
+                            iOS branch name is required
+                        </div>
+                        <div [hidden]="!releaseRaIos.errors?.minlength" class="invalid-feedback" >
+                            Must be at least 2 characters
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="rtt_xapi">Web</label>
+                        <input 
+                            type="text" 
+                            class="shadow rounded-pill form-control"
+                            placeholder="eg: tmo/mvp1"
+                            name="ra_web" 
+                            id="ra_web"
+                            #releaseRaWeb="ngModel"
+                            [(ngModel)]="release.branch.ra_web"
+                            [ngClass]="{'is-invalid': releaseRaWeb.errors && releaseRaWeb.touched, 'bg-moon-card': darkMode}"
+                            minlength="2"
+                            required
+                        >
+                        <div [hidden]="!releaseRaWeb.errors?.required" class="invalid-feedback" >
+                            Web branch name is required
+                        </div>
+                        <div [hidden]="!releaseRaWeb.errors?.minlength" class="invalid-feedback" >
+                            Must be at least 2 characters
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="ws">Api</label>
+                        <input 
+                            type="text" 
+                            class="shadow rounded-pill form-control"
+                            placeholder="eg: tmo/mvp1"
+                            name="ra_api" 
+                            id="ra_api"
+                            #releaseRaApi="ngModel"
+                            [(ngModel)]="release.branch.ra_api"
+                            [ngClass]="{'is-invalid': releaseRaApi.errors && releaseRaApi.touched, 'bg-moon-card': darkMode}"
+                            minlength="2"
+                            required
+                        >
+                        <div [hidden]="!releaseRaApi.errors?.required" class="invalid-feedback" >
+                            Api branch name is required
+                        </div>
+                        <div [hidden]="!releaseRaApi.errors?.minlength" class="invalid-feedback" >
+                            Must be at least 2 characters
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="ws">Apns</label>
+                        <input 
+                            type="text" 
+                            class="shadow rounded-pill form-control"
+                            placeholder="eg: tmo/mvp1"
+                            name="ra_apns" 
+                            id="ra_apns"
+                            #releaseRaApns="ngModel"
+                            [(ngModel)]="release.branch.ra_apns"
+                            [ngClass]="{'is-invalid': releaseRaApns.errors && releaseRaApns.touched, 'bg-moon-card': darkMode}"
+                            minlength="2"
+                            required
+                        >
+                        <div [hidden]="!releaseRaApns.errors?.required" class="invalid-feedback" >
+                            Apns branch name is required
+                        </div>
+                        <div [hidden]="!releaseRaApns.errors?.minlength" class="invalid-feedback" >
+                            Must be at least 2 characters
+                        </div>
+                    </div>
+                </div>
+                <div id="branches" name="branches" class="card-body rounded-3" *ngIf="app == 'rms'">
+                    <div class="form-group mb-3">
+                        <label for="fo">Front Office</label>
+                        <input 
+                            type="text" 
+                            class="shadow rounded-pill form-control"
+                            placeholder="eg: 21.1.5"
+                            name="fo" 
+                            id="fo"
+                            #releaseFo="ngModel"
+                            [(ngModel)]="release.branch.fo"
+                            [ngClass]="{'is-invalid': releaseFo.errors && releaseFo.touched, 'bg-moon-card': darkMode}"
+                            minlength="2"
+                            required
+                        >
+                        <div [hidden]="!releaseFo.errors?.required" class="invalid-feedback" >
+                            FO branch name is required
+                        </div>
+                        <div [hidden]="!releaseFo.errors?.minlength" class="invalid-feedback" >
+                            Must be at least 2 characters
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="ws">SOAP Webservice</label>
+                        <input 
+                            type="text" 
+                            class="shadow rounded-pill form-control"
+                            placeholder="eg: 21.1.5"
+                            name="ws" 
+                            id="ws"
+                            #releaseWs="ngModel"
+                            [(ngModel)]="release.branch.ws"
+                            [ngClass]="{'is-invalid': releaseWs.errors && releaseWs.touched, 'bg-moon-card': darkMode}"
+                            minlength="2"
+                            required
+                        >
+                        <div [hidden]="!releaseWs.errors?.required" class="invalid-feedback" >
+                            SOAP WS branch name is required
+                        </div>
+                        <div [hidden]="!releaseWs.errors?.minlength" class="invalid-feedback" >
+                            Must be at least 2 characters
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="bo">Back Office</label>
+                        <input 
+                            type="text" 
+                            class="shadow rounded-pill form-control"
+                            placeholder="eg: 21.1.5"
+                            name="bo" 
+                            id="bo"
+                            #releaseBo="ngModel"
+                            [(ngModel)]="release.branch.bo"
+                            [ngClass]="{'is-invalid': releaseBo.errors && releaseBo.touched, 'bg-moon-card': darkMode}"
+                            minlength="2"
+                            required
+                        >
+                        <div [hidden]="!releaseBo.errors?.required" class="invalid-feedback" >
+                            BO branch name is required
+                        </div>
+                        <div [hidden]="!releaseBo.errors?.minlength" class="invalid-feedback" >
+                            Must be at least 2 characters
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="rest">REST</label>
+                        <input 
+                            type="text" 
+                            class="shadow rounded-pill form-control"
+                            placeholder="eg: 21.1.5"
+                            name="rest" 
+                            id="rest"
+                            #releaseRest="ngModel"
+                            [(ngModel)]="release.branch.rest"
+                            [ngClass]="{'is-invalid': releaseRest.errors && releaseRest.touched, 'bg-moon-card': darkMode}"
+                            minlength="2"
+                            required
+                        >
+                        <div [hidden]="!releaseRest.errors?.required" class="invalid-feedback" >
+                            REST branch name is required
+                        </div>
+                        <div [hidden]="!releaseRest.errors?.minlength" class="invalid-feedback" >
+                            Must be at least 2 characters
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="db">DB</label>
+                        <input 
+                            type="text" 
+                            class="shadow rounded-pill form-control"
+                            placeholder="eg: 21.1.5"
+                            name="db" 
+                            id="db"
+                            #releaseDb="ngModel"
+                            [(ngModel)]="release.branch.db"
+                            [ngClass]="{'is-invalid': releaseDb.errors && releaseDb.touched, 'bg-moon-card': darkMode}"
+                            minlength="2"
+                            required
+                        >
+                        <div [hidden]="!releaseDb.errors?.required" class="invalid-feedback" >
+                            REST branch name is required
+                        </div>
+                        <div [hidden]="!releaseDb.errors?.minlength" class="invalid-feedback" >
+                            Must be at least 2 characters
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <div class="form-check form-switch">
+                    <input 
+                        type="checkbox" 
+                        class="shadow form-check-input" 
+                        id="prodLike"
+                        name="prodLike"
+                        #releaseProdLike="ngModel"
+                        [(ngModel)]="release.prodLike"
+                    >
+                    <label class="form-check-label" for="prodLike">Current Production</label>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="comments">Comments</label>
+                <textarea 
+                    name="comments" 
+                    id="comments" 
+                    class="shadow rounded-3 form-control"
+                    [class.bg-moon-card]="darkMode"
+                    rows="5"
+                    #releaseComments="ngModel"
+                    [(ngModel)]="release.comments"
+                ></textarea>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <input type="submit" value="Submit" class="shadow rounded-pill btn bg-magenta text-light">
+                <a class="shadow rounded-pill btn bg-secondary text-light" [routerLink]="[redirect]" routerLinkActive="router-link-active" >Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

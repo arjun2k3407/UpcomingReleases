@@ -1,0 +1,55 @@
+<div class="shadow card mb-5 rounded-3"  [class.bg-moon-card]="darkMode">
+    <div class="shadow rounded-3 card-header" [class.bg-moon-comp]="darkMode">
+        <h4>IB/Lease Validation SQL</h4>
+    </div>
+    <div class="shadow rounded-3 card-body">
+        <h6 class="card-title text-muted">This sql will work only in test environment</h6>
+        <p class="card-text">
+            <code>
+                    SELECT <br>
+    tl.trans_no, <br>
+    e.login_id, <br>
+    e.f_name <br>
+     || ' ' <br>
+     || e.l_name AS "USER NAME", <br>
+    tl.trans_dt, <br>
+    ceib.accnt_num AS "RMS BAN", <br>
+    l.ban AS "AMD BAN", <br>
+    l.loan_number, <br>
+    ceib.loan_amt AS "RMS LOAN AMOUNT", <br>
+    l.loan_orig_amt AS "AMD LOAN AMOUNT", <br>
+    ceib.loan_downpayment_amt + ceib.addnl_downpayment_amt AS "RMS DOWNPAYMENT", <br>
+    l.loan_down_pym_amt AS "AMD DOWNPAYMENT", <br>
+    ceib.instlmnt_amt AS "RMS INSTALLMENT AMOUNT", <br>
+    l.loan_install_amt AS "AMD INSTALLMENT AMOUNT", <br>
+    ceib.loan_term AS "RMS TERM", <br>
+    l.loan_term AS "AMD TERM" <br>
+FROM <br>
+    rms.transactionlog tl, <br>
+    rms.employee e, <br>
+    rms.contract_equip_instl_bill ceib, <br>
+    nxtappo.loan@rtl_loan_validation.world l <br>
+WHERE <br>
+    <span class="bg-success text-light">tl.trans_no in ()</span><span class="text-success">  -------Please Provide transaction number here</span><br>
+    AND  <br>
+   tl.trans_no = ceib.ref_trans_no <br>
+    AND <br>
+        e.empl_ba_id = tl.empl_ba_id <br>
+    AND <br>
+        l.loan_number = ceib.equip_instl_bill_agreemnt_nbr <br>
+    AND ( <br>
+        ( <br>
+            ( ceib.loan_downpayment_amt + ceib.addnl_downpayment_amt ) <> l.loan_down_pym_amt <br>
+        ) OR ( <br>
+            ceib.instlmnt_amt <> l.loan_install_amt <br>
+        ) OR ( <br>
+            ceib.loan_term <> l.loan_term <br>
+        ) OR ( <br>
+            tl.accnt_num <> l.ban <br>
+        ) <br>
+    ) <br>
+ORDER BY tl.trans_dt ASC;  <br>
+        </code>
+        </p>
+    </div>
+</div>

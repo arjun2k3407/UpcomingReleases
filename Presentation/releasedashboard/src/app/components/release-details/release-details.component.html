@@ -1,0 +1,190 @@
+<div class="row" [class.bg-moon]="darkMode">
+    <div class="col-md-6">
+        <a [routerLink]="[redirectFinish]" routerLinkActive="router-link-active" class="btn text-magenta">
+            <i class="fa fa-arrow-circle-o-left"></i> Back to Dashboard
+        </a>
+    </div>
+    <div *ngIf="isEditable" class="col-md-6">
+        <div class="shadow rounded-pill btn-group pull-right">
+            <a [routerLink]="[redirect+'edit/'+release?.id]" routerLinkActive="router-link-active"
+                class="shadow rounded-pill btn" [ngClass]="{'btn-dark': !darkMode, 'btn-secondary': darkMode}">
+                <i class="fa fa-pencil"></i> Edit
+            </a>
+            <a [routerLink]="[copyRedirect]" routerLinkActive="router-link-active"
+                class="shadow rounded-pill btn btn-success">
+                <i class="fa fa-clipboard" aria-hidden="true"></i> Clone
+            </a>
+            <button class="shadow rounded-pill btn btn-danger" (click)="onDelete()">
+                <i class="fa fa-trash-o"></i> Delete
+            </button>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="shadow-lg card mb-5 rounded-3" [class.bg-moon-card]="darkMode" *ngIf="release">
+    <h3 class="shadow rounded-3 card-header bg-magenta text-light">
+        {{ release.citrixId }} {{ release.name }}<span class="text-warning" *ngIf="release.prodLike"> - [Production
+            Like] </span>
+    </h3>
+    <div class="shadow rounded-3 card-body" [class.bg-moon-card]="darkMode">
+        <form>
+            <div class="form-group mb-2">
+                <label for="date">
+                    <h4><i class="fa fa-calendar"></i>: </h4>
+                </label>
+                <span id="date" name="date" class="text-secondary ms-1" [ngClass]="{'text-secondary': !darkMode, 'text-light': darkMode}">{{ release.date | date:"fullDate" }}</span>
+            </div>
+            <div class="form-group mb-2">
+                <label for="backend">Dev Environment:</label>
+                <span id="backend" name="backend" class="text-danger" *ngIf="release.devInstance"> {{ release.devInstance }}</span>
+                <span id="backend" name="backend" class="text-danger" *ngIf="!release.devInstance"> N/A</span>
+            </div>
+            <div class="form-group mb-2">
+                <label for="backend">QA Environment:</label>
+                <span id="backend" name="backend" class="text-danger" *ngIf="release.testInstance"> {{ release.testInstance }}</span>
+                <span id="backend" name="backend" class="text-danger" *ngIf="!release.testInstance"> N/A</span>
+            </div>
+            <div class="form-group mb-2">
+                <label for="backend">Back End:</label>
+                <span id="backend" name="backend" class="text-danger"> {{ release.backend }}</span>
+                <span id="backend" name="backend" class="text-danger" *ngIf="!release.backend"> N/A</span>
+            </div>
+            <div class="form-group mb-3" *ngIf="release.comments">
+                <label for="comments">Additional Info: </label>
+                <span id="comments" name="comments" class="text-primary"> {{ release.comments }}</span>
+            </div>
+            <div class="form-group mb-3" *ngIf="app != 'rtt'">
+                <table id="dbDetails" name="dbDetails" *ngIf="release.devDB || release.testDB ; else noDB"
+                    class="shadow table table-sm table-hover table-light table-striped table-bordered caption-top">
+                    <caption><h4>DB Details</h4></caption>
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">
+                                <span *ngIf="app =='rms'">Channel</span>
+                                <span *ngIf="app =='ra'">Application</span>
+                            </th>
+                            <th scope="col">DEV Database</th>
+                            <th scope="col">TEST Database</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-magenta" *ngIf="app =='ra'">
+                            <th scope="row">Retail Alerts</th>
+                            <td *ngIf="release.devDB && release.devDB?.ra">{{ release.devDB?.ra }}</td>
+                            <td *ngIf="!release.devDB || !release.devDB?.ra">N/A</td>
+                            <td *ngIf="release.testDB && release.testDB?.ra">{{ release.testDB?.ra }}</td>
+                            <td *ngIf="!release.testDB || !release.testDB?.ra">N/A</td>
+                        </tr>
+                        <tr class="text-warning" *ngIf="app =='rms'">
+                            <th scope="row">RHS</th>
+                            <td *ngIf="release.devDB && release.devDB?.rhs">{{ release.devDB?.rhs }}</td>
+                            <td *ngIf="!release.devDB || !release.devDB?.rhs">N/A</td>
+                            <td *ngIf="release.testDB && release.testDB?.rhs">{{ release.testDB?.rhs }}</td>
+                            <td *ngIf="!release.testDB || !release.testDB?.rhs">N/A</td>
+                        </tr>
+                        <tr class="text-magenta" *ngIf="app =='rms'">
+                            <th scope="row">LFO</th>
+                            <td *ngIf="release.devDB && release.devDB?.lfo">{{ release.devDB?.lfo }}</td>
+                            <td *ngIf="!release.devDB || !release.devDB?.lfo">N/A</td>
+                            <td *ngIf="release.testDB && release.testDB?.lfo">{{ release.testDB?.lfo }}</td>
+                            <td *ngIf="!release.testDB || !release.testDB?.lfo">N/A</td>
+                        </tr>
+                        <tr class="text-primary" *ngIf="app =='rms'">
+                            <th scope="row">RAI</th>
+                            <td *ngIf="release.devDB && release.devDB?.rai">{{ release.devDB?.rai }}</td>
+                            <td *ngIf="!release.devDB || !release.devDB?.rai">N/A</td>
+                            <td *ngIf="release.testDB && release.testDB?.rai">{{ release.testDB?.rai }}</td>
+                            <td *ngIf="!release.testDB || !release.testDB?.rai">N/A</td>
+                        </tr>
+                        <tr class="text-primary" *ngIf="app =='rms'">
+                            <th scope="row">VWI</th>
+                            <td *ngIf="release.devDB && release.devDB?.vwi">{{ release.devDB?.vwi }}</td>
+                            <td *ngIf="!release.devDB || !release.devDB?.vwi">N/A</td>
+                            <td *ngIf="release.testDB && release.testDB?.vwi">{{ release.testDB?.vwi }}</td>
+                            <td *ngIf="!release.testDB || !release.testDB?.vwi">N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group mb-3">
+               <table id="branch" name="branch" *ngIf="release.branch ; else noBranch"
+                    class="shadow table table-dark table-sm table-hover table-bordered caption-top">
+                    <caption><h4>Branch Details</h4></caption>
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Application</th>
+                            <th scope="col">Branch Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="release.branch && release.branch?.fo">
+                            <th scope="row">Front Office</th>
+                            <td *ngIf="release.branch && release.branch?.fo">{{ release.branch?.fo }}</td>
+                            <td *ngIf="!release.branch || !release.branch?.fo">Not Available</td>
+                        </tr>
+                        <tr *ngIf="release.branch && release.branch?.bo">
+                            <th scope="row">Back Office</th>
+                            <td *ngIf="release.branch && release.branch?.bo">{{ release.branch?.bo }}</td>
+                            <td *ngIf="!release.branch || !release.branch?.bo">Not Available</td>
+                        </tr>
+                        <tr *ngIf="release.branch && release.branch?.ws">
+                            <th scope="row">SOAP Webservice</th>
+                            <td *ngIf="release.branch && release.branch?.ws">{{ release.branch?.ws }}</td>
+                            <td *ngIf="!release.branch || !release.branch?.ws">Not Available</td>
+                        </tr>
+                        <tr *ngIf="release.branch && release.branch?.rest">
+                            <th scope="row">RESTful Webservice</th>
+                            <td *ngIf="release.branch && release.branch?.rest">{{ release.branch?.rest }}</td>
+                            <td *ngIf="!release.branch || !release.branch?.rest">Not Available</td>
+                        </tr>
+                        <tr *ngIf="release.branch && release.branch?.db">
+                            <th scope="row">Database</th>
+                            <td *ngIf="release.branch && release.branch?.db">{{ release.branch?.db }}</td>
+                            <td *ngIf="!release.branch || !release.branch?.db">Not Available</td>
+                        </tr>
+                        <tr *ngIf="release.branch && release.branch?.rtt_xapi">
+                            <th scope="row">xAPI</th>
+                            <td *ngIf="release.branch && release.branch?.rtt_xapi">{{ release.branch?.rtt_xapi }}</td>
+                            <td *ngIf="!release.branch || !release.branch?.rtt_xapi">Not Available</td>
+                        </tr>
+                        <tr *ngIf="release.branch && release.branch?.rtt_ios">
+                            <th scope="row">iOS</th>
+                            <td *ngIf="release.branch && release.branch?.rtt_ios">{{ release.branch?.rtt_ios }}</td>
+                            <td *ngIf="!release.branch || !release.branch?.rtt_ios">Not Available</td>
+                        </tr>
+                        <tr *ngIf="release.branch && release.branch?.ra_ios">
+                            <th scope="row">iOS</th>
+                            <td *ngIf="release.branch && release.branch?.ra_ios">{{ release.branch?.ra_ios }}</td>
+                            <td *ngIf="!release.branch || !release.branch?.ra_ios">Not Available</td>
+                        </tr>
+                        <tr *ngIf="release.branch && release.branch?.ra_web">
+                            <th scope="row">Web</th>
+                            <td *ngIf="release.branch && release.branch?.ra_web">{{ release.branch?.ra_web }}</td>
+                            <td *ngIf="!release.branch || !release.branch?.ra_web">Not Available</td>
+                        </tr>
+                        <tr *ngIf="release.branch && release.branch?.ra_api">
+                            <th scope="row">Api</th>
+                            <td *ngIf="release.branch && release.branch?.ra_api">{{ release.branch?.ra_api }}</td>
+                            <td *ngIf="!release.branch || !release.branch?.ra_api">Not Available</td>
+                        </tr>
+                        <tr *ngIf="release.branch && release.branch?.ra_apns">
+                            <th scope="row">Apns</th>
+                            <td *ngIf="release.branch && release.branch?.ra_apns">{{ release.branch?.ra_apns }}</td>
+                            <td *ngIf="!release.branch || !release.branch?.ra_apns">Not Available</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
+<ng-template #noDB>
+    <div class="form-group mb-3"  [class.bg-moon-card]="darkMode">
+        <h4 class="text-danger">No DEV/TEST DB details available</h4>
+    </div>
+</ng-template>
+<ng-template #noBranch>
+    <div class="form-group mb-3"  [class.bg-moon-card]="darkMode">
+        <h4 class="text-danger">No branch details available</h4>
+    </div>
+</ng-template>

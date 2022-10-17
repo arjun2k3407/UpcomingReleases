@@ -1,0 +1,143 @@
+<h5 *ngIf="!loaded; else usersTemplate" [class.bg-moon]="darkMode">Loading...</h5>
+<div *ngIf="loaded &&  users?.length === 0">
+    <h5>There is no users.</h5>
+</div>
+<ng-template #usersTemplate>
+    <div class="row" [class.bg-moon]="darkMode">
+        <div class="col-md-6">
+            <a [routerLink]="[redirectHome]" routerLinkActive="router-link-active" class="btn text-magenta">
+                <i class="fa fa-arrow-circle-o-left"></i> Back to Home
+            </a>
+        </div>
+        <h2>Link Corner Users</h2>
+    </div>
+    <hr>
+    <div class="row" [class.bg-moon]="darkMode">
+        <div class="col-md-10">
+            <div class="shadow table-responsive" *ngIf="users?.length > 0">
+                <table id="userDetails" name="userDetails"
+                    class="shadow table table-responsive table-hover table-bordered mb-2"
+                    [ngClass]="{'table-dark': !darkMode, 'table-success': darkMode}">
+                    <thead class="shadow" [ngClass]="{'table-dark': !darkMode, 'table-success': darkMode}">
+                        <tr>
+                            <th scope="col" class="text-center">ID</th>
+                            <th scope="col" class="text-center">First Name</th>
+                            <th scope="col" class="text-center">Last Name</th>
+                            <th scope="col" class="text-center">Edit Access</th>
+                            <th scope="col" class="text-center">Add Access</th>
+                            <th scope="col" class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="shadow" [ngClass]="{'table-dark': darkMode, 'table-light': !darkMode}">
+                        <tr *ngFor="let usr of users">
+                            <td class="text-center">{{usr.ntid}}</td>
+                            <td class="text-center">{{ usr.fname }}</td>
+                            <td class="text-center">{{ usr.lname }}</td>
+                            <td class="text-center">
+                                <span *ngIf="usr.edit"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                <span *ngIf="!usr.edit"><i class="fa fa-times" aria-hidden="true"></i></span>
+                            </td>
+                            <td class="text-center">
+                                <span *ngIf="usr.add"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                <span *ngIf="!usr.add"><i class="fa fa-times" aria-hidden="true"></i></span>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" class="shadow rounded-pill btn btn-secondary text-light"
+                                    data-bs-toggle="modal" data-bs-target="#userModal" (click)="setUser(usr)">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i> Update
+                                </button>
+                                <button class="shadow rounded-pill btn btn-danger" (click)="onDelete(usr)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-2 mb-4">
+            <div class="d-grid gap-2 mx-auto mb-5">
+                <button type="button" class="shadow rounded-pill btn btn-success text-light" data-bs-toggle="modal"
+                    data-bs-target="#userModal" (click)="setUser(dummyUser)">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Add User
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content" [class.bg-moon]="darkMode">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userModalLabel"><span *ngIf="user.id == null">Add New </span><span
+                            *ngIf="user.id != null">Edit </span>User</h5>
+                    <button type="button" class="btn-close" [class.btn-close-white]="darkMode" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
+                    <div class="modal-body" [class.bg-moon-card]="darkMode">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="shadow rounded-pill form-control  text-uppercase" id="ntid" name="ntid"
+                                placeholder="Joe" #userNtid="ngModel" [(ngModel)]="user.ntid"
+                                [ngClass]="{'is-invalid': userNtid.errors && userNtid.touched, 'bg-moon-card': darkMode}"
+                                minlength="4" required>
+                            <label for="fname">NT ID</label>
+                            <div [hidden]="!userNtid.errors?.required" class="invalid-feedback">
+                                NTID is required
+                            </div>
+                            <div [hidden]="!userNtid.errors?.minlength" class="invalid-feedback">
+                                NTID must have at least 4 characters
+                            </div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="shadow rounded-pill form-control" id="fname" name="fname"
+                                placeholder="Joe" #userFname="ngModel" [(ngModel)]="user.fname"
+                                [ngClass]="{'is-invalid': userFname.errors && userFname.touched, 'bg-moon-card': darkMode}"
+                                minlength="2" required>
+                            <label for="fname">First Name</label>
+                            <div [hidden]="!userFname.errors?.required" class="invalid-feedback">
+                                First name is required
+                            </div>
+                            <div [hidden]="!userFname.errors?.minlength" class="invalid-feedback">
+                                First name must have at least 2 characters
+                            </div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="shadow rounded-pill form-control" id="lname" name="lname"
+                                placeholder="Doe" #userLname="ngModel" [(ngModel)]="user.lname"
+                                [ngClass]="{'is-invalid': userLname.errors && userLname.touched, 'bg-moon-card': darkMode}"
+                                minlength="2" required>
+                            <label for="fname">Last Name</label>
+                            <div [hidden]="!userLname.errors?.required" class="invalid-feedback">
+                                Last name is required
+                            </div>
+                            <div [hidden]="!userLname.errors?.minlength" class="invalid-feedback">
+                                Last name must have at least 2 characters
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="shadow form-check-input" id="edit" name="edit"
+                                    #releaseProdLike="ngModel" [(ngModel)]="user.edit">
+                                <label class="form-check-label" for="edit">Edit Access</label>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="shadow form-check-input" id="add" name="add"
+                                    #releaseProdLike="ngModel" [(ngModel)]="user.add">
+                                <label class="form-check-label" for="add">Add User Access</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="shadow rounded-pill btn btn-magenta text-light"
+                            data-bs-dismiss="modal">Save</button>
+                        <button type="button" class="shadow rounded-pill btn btn-secondary"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</ng-template>

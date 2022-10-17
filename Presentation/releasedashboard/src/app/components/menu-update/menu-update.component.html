@@ -1,0 +1,94 @@
+<div class="row" [class.bg-moon]="darkMode">
+    <div class="col-md-12">
+        <a [routerLink]="['/menu']" routerLinkActive="router-link-active" class="btn text-magenta">
+            <i class="fa fa-arrow-circle-o-left"></i> Back to Menu Details
+        </a>
+    </div>
+</div>
+<div *ngIf="(!loaded || menu == undefined); else menuUpdateTemplate" class="card-body" [class.bg-moon-card]="darkMode">
+    <h5>Problem retrieving menu details</h5>
+</div>
+<ng-template #menuUpdateTemplate>
+    <div class="shadow card mb-5 rounded-3" [class.bg-moon-card]="darkMode">
+        <div class="shadow rounded-3 card card-header bg-magenta text-light">
+            <h3>Update Menu</h3>
+        </div>
+        <div class="shadow rounded-3 card-body">
+            <form #menuUpdateForm="ngForm" (ngSubmit)="onSubmit(menuUpdateForm)">
+                <div class="form-group mb-3">
+                    <label for="header">Menu Header</label>
+                    <input 
+                        type="text" 
+                        class="shadow rounded-pill form-control"
+                        placeholder="Header"
+                        name="header" 
+                        id="header"
+                        #menuHeader="ngModel"
+                        [(ngModel)]="menu.header"
+                        [ngClass]="{'is-invalid': menuHeader.errors && menuHeader.touched, 'bg-moon-card': darkMode}"
+                        required
+                    >
+                    <div [hidden]="!menuHeader.errors?.required" class="invalid-feedback" >
+                        Header is required
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <div class="form-check form-check-inline">
+                        <input 
+                            type="radio" 
+                            class="shadow form-check-input" 
+                            id="positionSame" 
+                            name="position"
+                            [(ngModel)]="position" 
+                            [value]="positionSame"
+                        >
+                        <label class="form-check-label" for="positionSame">Same Menu Position</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input 
+                            type="radio" 
+                            class="shadow form-check-input" 
+                            id="positionFirst" 
+                            name="position"
+                            [(ngModel)]="position" 
+                            [value]="positionFirst"
+                        >
+                        <label class="form-check-label" for="positionFirst">Make this First Menu</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input 
+                            type="radio" 
+                            class="shadow form-check-input" 
+                            id="positionAfter" 
+                            name="position"
+                            [(ngModel)]="position" 
+                            [value]="positionAfter"
+                        >
+                        <label class="form-check-label" for="positionAfter">Move this Menu After</label>
+                    </div>
+                </div>
+                <div class="form-group mb-3" *ngIf="position==='a'">
+                    <label for="prevId">Menu</label>
+                    <select 
+                        class="shadow rounded-pill form-control form-select" 
+                        name="prevId" 
+                        id="prevId"
+                        [(ngModel)]="prevId"
+                        #menuPrevId="ngModel"
+                        [ngClass]="{'is-invalid': menuPrevId.errors && menuPrevId.touched, 'bg-moon-card': darkMode, 'arrow-white': darkMode}"
+                        required
+                    >
+                        <option *ngFor="let menu of menus" value="{{ menu.id }}">{{ menu.header }}</option>
+                    </select>
+                    <div [hidden]="!menuPrevId.errors?.required" class="invalid-feedback" >
+                        Menu is required
+                    </div>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <input type="submit" value="Update" class="shadow rounded-pill btn bg-magenta text-light">
+                    <a class="shadow rounded-pill btn bg-secondary text-light" [routerLink]="['/menu']" routerLinkActive="router-link-active" >Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>

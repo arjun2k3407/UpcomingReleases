@@ -1,0 +1,54 @@
+<div class="row mx-2 my-2" [class.bg-moon]="darkMode">
+    <h2>Applications</h2>
+</div>
+<div class="row mx-2 my-2" [class.bg-moon]="darkMode">
+    <div class="shadow card rounded-3 mx-2 my-2 col-md-5"
+        [ngClass]="{'bg-white': !darkMode, 'bg-moon-card': darkMode, 'text-light': darkMode}">
+        <div class="card-header" [ngClass]="{'bg-white': !darkMode, 'bg-moon-card': darkMode, 'text-light': darkMode}">
+            <h3>RMS
+                <div class="float-end">
+                    <a class="shadow rounded-pill btn btn-warning" [routerLink]="['/rms']" routerLinkActive="router-link-active" >Dashboard</a>
+                </div>
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="card-title" [ngClass]="{'bg-white': !darkMode, 'bg-moon-card': darkMode, 'text-light': darkMode}">
+                <h5>Retail Management System</h5>
+            </div>
+            <p class="card-text">RMS is Legacy Sprint's point-of-sale application where front end transaction like activation, upgrade, returns, exchange, change plan etc. happens.</p>
+        </div>
+    </div>
+    <div class="shadow card rounded-3 mx-2 my-2 col-md-5"
+        [ngClass]="{'bg-white': !darkMode, 'bg-moon-card': darkMode, 'text-light': darkMode}">
+        <div class="card-header" [ngClass]="{'bg-white': !darkMode, 'bg-moon-card': darkMode, 'text-light': darkMode}">
+            <h3>RTT
+                <div class="float-end">
+                    <a class="shadow rounded-pill btn btn-magenta text-light" [routerLink]="['/rtt']" routerLinkActive="router-link-active" >Dashboard</a>
+                </div>
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="card-title" [ngClass]="{'bg-white': !darkMode, 'bg-moon-card': darkMode, 'text-light': darkMode}">
+                <h5>Retail Troubleshooting Tool</h5>
+            </div>
+            <p class="card-text">Provide Retail front-line with a trouble shooting tool that will provide customers real time solutions to issues they are experiencing.</p>
+        </div> 
+    </div>
+    <div class="shadow card rounded-3 mx-2 my-2 col-md-5"
+        [ngClass]="{'bg-white': !darkMode, 'bg-moon-card': darkMode, 'text-light': darkMode}">
+        <div class="card-header" [ngClass]="{'bg-white': !darkMode, 'bg-moon-card': darkMode, 'text-light': darkMode}">
+            <h3>RA
+                <div class="float-end">
+                    <a class="shadow rounded-pill btn btn-magenta text-light" [routerLink]="['/ra']" routerLinkActive="router-link-active" >Dashboard</a>
+                </div>
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="card-title" [ngClass]="{'bg-white': !darkMode, 'bg-moon-card': darkMode, 'text-light': darkMode}">
+                <h5>Retail Alerts</h5>
+            </div>
+            <p class="card-text"> Provide ability to receive/view the alert notification on Retail Mobility Tablets (REMO). Also, provides Store Ops Admin User with a web-based application to compose, send, 
+                and manage the alert notifications/messages.</p>
+        </div> 
+    </div>
+</div>

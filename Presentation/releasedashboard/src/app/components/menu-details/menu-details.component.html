@@ -1,0 +1,72 @@
+<div [class.bg-moon]="darkMode">
+    <h5 [class.bg-moon]="darkMode" *ngIf="!loaded; else menuTemplate">Loading...</h5>
+    <div *ngIf="loaded &&  menus?.length === 0" class="card-body" [class.bg-moon]="darkMode">
+        <h5>There is No Existing Menu</h5>
+    </div>
+</div>
+<ng-template #menuTemplate>
+    <div class="shadow card mb-5 rounded-3" [class.bg-moon-comp]="darkMode">
+        <div class="shadow card card-header bg-magenta text-light rounded-3">
+            <h3>Menu Details</h3>
+        </div>
+        <div id="accordion" *ngIf="loaded && menus?.length > 0" class="shadow card-body rounded-3">
+            <div class="shadow card rounded-3" [class.bg-moon-card]="darkMode"
+                *ngFor="let menu of menus; index as i; first as isFirst;">
+                <div class="shadow rounded-3 card-header btn btn-link" id="{{ menu.id }}" data-bs-toggle="collapse"
+                    [attr.data-bs-target]="'#collapseOne_' + i" aria-expanded="true"
+                    [attr.aria-controls]="'collapseOne_' + i" (click)="collapseState[i]=!collapseState[i]">
+                    <div class="float-start">
+                        <i class="fa fa-plus-circle" aria-hidden="true" *ngIf="!collapseState[i]"></i>
+                        <i class="fa fa-minus-circle" aria-hidden="true" *ngIf="collapseState[i]"></i>
+                        {{ menu.header }}
+                        <span class="shadow badge rounded-circle bg-success">{{ menu.items?.length }}</span>
+                    </div>
+                    <div class="shadow  rounded-pill btn-group btn-group-sm float-end" role="group">
+                        <button *ngIf="isEditable" [routerLink]="['/menu/edit/'+menu.id]"
+                            routerLinkActive="router-link-active" class="shadow rounded-pill btn btn-secondary">
+                            <i class="fa fa-pencil" aria-hidden="true"> Edit</i>
+                        </button>
+                        <button *ngIf="isEditable" class="shadow rounded-pill btn btn-danger" (click)="onDelete(menu)">
+                            <i class="fa fa-trash-o"> Delete</i>
+                        </button>
+                    </div>
+                </div>
+                <div [attr.id]="'collapseOne_' + i" class="shadow collapse" [ngClass]="{show: isFirst}"
+                    aria-labelledby="{{ menu.id }}" data-bs-parent="#accordion">
+                    <div class="shadow rounded-3 card-body" [class.bg-moon-comp]="darkMode">
+                        <ul class="shadow rounded-3 list-group list-group-flush" *ngIf="menu.items?.length > 0">
+                            <li class="shadow rounded-3 list-group-item" [class.bg-moon-card]="darkMode"
+                                *ngFor="let item of menu.items">
+                                <div class="d-flex">
+                                    <div *ngIf="item.type==='item'">
+                                        <i class="fa fa-long-arrow-right" aria-hidden="true"></i> {{ item.name }}
+                                    </div>
+                                    <div *ngIf="item.type==='divider'">
+                                        <span class="text-danger"><i class="fa fa-arrow-circle-right"
+                                                aria-hidden="true"></i> ____________</span>
+                                    </div>
+                                    <div *ngIf="item.type==='header'">
+                                        <span class="text-success"><i class="fa fa-chevron-right"
+                                                aria-hidden="true"></i> HEADER - {{ item.name }}</span>
+                                    </div>
+                                    <div class="shadow rounded-pill btn-group btn-group-sm ms-auto" role="group">
+                                        <button *ngIf="isEditable"
+                                            [routerLink]="['/menu/item/edit/'+menu.id+'/'+item.id]"
+                                            routerLinkActive="router-link-active"
+                                            class="shadow rounded-pill btn btn-secondary">
+                                            <i class="fa fa-pencil" aria-hidden="true"> Edit</i>
+                                        </button>
+                                        <button *ngIf="isEditable" class="shadow rounded-pill btn btn-danger"
+                                            (click)="onDeleteItem(item)">
+                                            <i class="fa fa-trash-o"> Delete</i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

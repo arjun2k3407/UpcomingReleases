@@ -1,0 +1,93 @@
+<nav class="shadow navbar navbar-dark navbar-expand-lg mb-2 sticky-top" [class.bg-magenta]="!darkMode"
+    [class.bg-dark]="darkMode">
+    <div class="container-fluid">
+        <a [routerLink]="['/']" routerLinkActive="router-link-active" class="navbar-brand">
+            <img src="./assets/images/tmo_logo.jpg" width="70" height="30" class="d-inline-block align-top" alt=""
+                *ngIf="!darkMode">
+            <img src="./assets/images/tmo_logo_dark.png" width="70" height="20" class="d-inline-block" alt=""
+                *ngIf="darkMode">
+            Release Dashboard
+        </a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarMain"><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <button type="button" class="btn text-light" id="options" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" [ngClass]="{'dropdown-menu-dark': darkMode}" aria-labelledby="options">
+                        <a class="dropdown-item" style="padding: 0.05em 1em;" [routerLink]="['/rms']"
+                            routerLinkActive="router-link-active">RMS</a>
+                        <a class="dropdown-item" style="padding: 0.05em 1em;" [routerLink]="['/rtt']"
+                            routerLinkActive="router-link-active">RTT</a>
+                        <a class="dropdown-item" style="padding: 0.05em 1em;" [routerLink]="['/ra']"
+                            routerLinkActive="router-link-active">RA</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown" *ngFor="let menu of menus">
+                    <a class="nav-link dropdown-toggle" href="#" id="{{ menu.header }}" role="button"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{menu.header}}
+                    </a>
+                    <div class="dropdown-menu" [ngClass]="{'dropdown-menu-dark': darkMode}" aria-labelledby="{{ menu.header }}">
+                        <div *ngFor="let item of menu.items">
+                            <a *ngIf="item.type ==='item'" class="dropdown-item" style="padding: 0.05em 1em;"
+                                href="{{ item.link }}" target="_blank">{{item.name}}</a>
+                            <div *ngIf="item.type ==='divider'" class="dropdown-divider" [ngClass]="{'bg-secondary': darkMode}" style="padding: 0.05em 1em;">
+                            </div>
+                            <div *ngIf="item.type ==='header'" class="dropdown-header" style="padding: 0.05em 1em;">
+                                {{item.name}}</div>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="sql" role="button" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Useful SQL
+                    </a>
+                    <div class="dropdown-menu" [ngClass]="{'dropdown-menu-dark': darkMode}" aria-labelledby="sql">
+                        <a class="dropdown-item" style="padding: 0.05em 1em;" [routerLink]="['/sql/regression']"
+                            routerLinkActive="router-link-active">Regression Validation</a>
+                        <a class="dropdown-item" style="padding: 0.05em 1em;" [routerLink]="['/sql/backend']"
+                            routerLinkActive="router-link-active" *ngIf="loggedIn">Backend Switch</a>
+                        <a class="dropdown-item" style="padding: 0.05em 1em;" [routerLink]="['/sql/misc']"
+                            routerLinkActive="router-link-active" *ngIf="loggedIn">Miscellaneous</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/urls']" routerLinkActive="router-link-active" class="nav-link">Env Urls</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <div class="nav-link"><i class="fa fa-user" aria-hidden="true"></i> {{ name }}</div>
+                </li>
+                <li class="nav-item dropdown">
+                    <button type="button" class="btn text-light" id="options" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" [ngClass]="{'dropdown-menu-dark': darkMode}" aria-labelledby="options">
+                        <a class="dropdown-item" style="padding: 0.05em 1em;" (click)="toggleTheme('sun')"
+                            *ngIf="darkMode"><i class="fa fa-sun-o" aria-hidden="true"></i> Light Theme</a>
+                        <a class="dropdown-item" style="padding: 0.05em 1em;" (click)="toggleTheme('moon')"
+                            *ngIf="!darkMode"><i class="fa fa-moon-o" aria-hidden="true"></i> Dark Theme</a>
+                        <a class="dropdown-item" style="padding: 0.05em 1em;" [routerLink]="['/validate']"
+                            routerLinkActive="router-link-active" *ngIf="!loggedIn">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+                            <a class="dropdown-item" style="padding: 0.05em 1em;" [routerLink]="['/menu']"
+                            routerLinkActive="router-link-active" *ngIf="loggedIn && editAccess">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Menu</a>
+                        <a class="dropdown-item" style="padding: 0.05em 1em;" [routerLink]="['/users']"
+                            routerLinkActive="router-link-active" *ngIf="loggedIn && addAccess">
+                            <i class="fa fa-users" aria-hidden="true"></i> Users</a>
+                        <a class="dropdown-item" style="padding: 0.05em 1em;" (click)="logOut()"
+                            *ngIf="loggedIn"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

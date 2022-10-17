@@ -1,0 +1,93 @@
+<div class="row mb-5" [class.bg-moon]="darkMode">
+    <div class="col-md-4 mb-2" [class.bg-moon]="darkMode">
+        <div class="shadow rounded-3 card border-success" [class.bg-moon-card]="darkMode">
+            <div class="shadow rounded-3 card-header bg-success text-light">
+                <h4>Password Reset/Update</h4>
+            </div>
+            <div class="shadow rounded-3 card-body">
+                <h6 class="card-subtitle mb-4">SQL to update password of any user to sprint01</h6>
+                <p class="card-text">
+                    UPDATE <br>
+                        EMPLOYEE<br>
+                    SET <br>
+                        PWD = '7nyfkq80', <br>
+                        LOGIN_ATTEMPT = 0, <br>
+                        LAST_PWDCHNG_DT = sysdate, <br>
+                        FORCE_PASSWD_CD = 'n'<br>
+                    WHERE <br>
+                        EMPL_BA_ID <br>
+                    IN <br>
+                        (SELECT <br>
+                            EMPL_BA_ID <br>
+                        FROM <br>
+                            EMPLOYEE <br>
+                        WHERE <br>
+                            LOGIN_ID <br>
+                        IN <br>
+                            <span class="bg-success text-light">('RASHMI')</span><span class="text-success"> -->Please Provide login name</span><br>
+                        );
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-2" [class.bg-moon]="darkMode">
+        <div class="shadow rounded-3 card border-danger" [class.bg-moon-card]="darkMode">
+            <div class="shadow rounded-3 card-header bg-danger text-light">
+                <h4>App Level Flag Update</h4>
+            </div>
+            <div class="shadow rounded-3 card-body">
+                <h6 class="card-subtitle mb-4">Use below sql to update the spc_code database.</h6>
+                <p class="card-text">
+                    UPDATE  <br>
+                        PREMIER_OWNER.SPCS_CODE <br>
+                    SET  <br>
+                        CODE_VALU_TXT = '<span class="bg-danger text-light"><></span>'<span class="text-danger"> -->Please update flag status</span><br>
+                    WHERE <br>
+                        CODE_NME = '<span class="bg-danger text-light">FLAG_NAME</span>'<span class="text-danger"> -->Please update flag name</span><br>
+                    ;
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-2" [class.bg-moon]="darkMode">
+        <div class="shadow rounded-3 card border-warning" [class.bg-moon-card]="darkMode">
+            <div class="shadow rounded-3 card-header bg-warning">
+                <h4>Store Level Flag Update</h4>
+            </div>
+            <div class="shadow rounded-3 card-body">
+                <h6 class="card-subtitle mb-4">Use below sql to update the company_int database.</h6>
+                <p class="card-text">
+                    UPDATE  <br>
+                        RMS.COMPANY_INT <br>
+                    SET  <br>
+                        <span class="bg-warning">COLUMN_NAME</span><span class="text-warning"> -->Please update column name</span><br>
+                        = '<span class="bg-warning"><></span>'<span class="text-warning"> -->Please update flag status</span><br>
+                    WHERE <br>
+                        COMPANY_NM = '<span class="bg-warning">STORE_NAME</span>'<span class="text-warning"> -->Please update store name</span><br>
+                        ;
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-2" [class.bg-moon]="darkMode">
+        <div class="shadow rounded-3 card border-primary" [class.bg-moon-card]="darkMode">
+            <div class="shadow rounded-3 card-header bg-primary text-light">
+                <h4>System Level Flag Update</h4>
+            </div>
+            <div class="shadow rounded-3 card-body">
+                <h6 class="card-subtitle mb-4">Use below sql to update the system_default database.</h6>
+                <p class="card-text">
+                    UPDATE <br>
+                        RMS.SYSTEM_DEFAULTS <br>
+                    SET <br>
+                        STRVALUE = '<span class="bg-primary text-light"><></span>'<span class="text-primary"> -->Please update flag status</span><br>
+                    WHERE <br>
+                        CODETYPE = '<span class="bg-primary text-light">FLAG_NAME</span>'<span class="text-primary"> -->Please update flag name</span><br>
+                    ;
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

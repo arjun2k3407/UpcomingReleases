@@ -1,0 +1,33 @@
+<div class="row my-5 rounded-3">
+    <div class="col-md-6 mx-auto rounded-3">
+        <div class="shadow card rounded-3" [class.bg-moon-card]="darkMode">
+            <div class="shadow card-body rounded-3">
+                <h1 class="text-center pb-4 pt-3">
+                    <span class="text-magenta"><i class="fa fa-lock"></i> User</span> Validation
+                </h1>
+                <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
+                    <div class="form-group mb-3">
+                        <input 
+                            type="text" 
+                            name="adid" 
+                            id="adid"
+                            placeholder="NTID"
+                            class="shadow rounded-pill form-control text-uppercase"
+                            #userAdid="ngModel"
+                            [(ngModel)]="adid"
+                            [ngClass]="{'is-invalid': userAdid.errors && userAdid.touched, 'bg-moon-card': darkMode}"
+                            required
+                        >
+                        <div [hidden]="!userAdid.errors?.required" class="invalid-feedback" >
+                            NTID is required
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <input type="submit" value="Validate User Access" class="shadow rounded-pill btn bg-magenta text-light">
+                        <a class="shadow rounded-pill btn bg-secondary text-light" [routerLink]="['/']" routerLinkActive="router-link-active" >Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

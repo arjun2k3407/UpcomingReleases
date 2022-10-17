@@ -1,0 +1,167 @@
+<div class="row" [class.bg-moon]="darkMode">
+    <div class="col-md-6">
+        <a [routerLink]="['/']" routerLinkActive="router-link-active"  class="btn text-magenta">
+            <i class="fa fa-arrow-circle-o-left"></i> Back to Dashboard
+        </a>
+    </div>
+    <div class="col-md-6"></div>
+</div>
+<div class="row mb-3" [class.bg-moon]="darkMode">
+    <div class="col-md-6">
+        <h4>Please select the environment</h4>
+    </div>
+    <div class="col-md-6"></div>
+</div>
+<div class="shadow rounded-3 card card-header mb-2" [class.bg-moon-card]="darkMode">
+    <div class="form-group mb-3">
+        <label for="instance">Environment</label>
+        <select 
+            class="shadow rounded-pill form-control form-select" 
+            [ngClass]="{'bg-moon-card': darkMode, 'arrow-white': darkMode}"
+            name="instance" 
+            id="instance" 
+            [(ngModel)]="selectedDB" 
+            #instanceSelected="ngModel"
+        >
+            <option></option>
+            <option *ngFor="let server of servers" [ngValue]="server">{{ server.displayName }}</option>
+        </select>
+    </div>
+</div>
+<div *ngIf="selectedDB" class="shadow rounded-3 card card-body mb-5" [class.bg-moon-card]="darkMode">
+        <div class="card-title mb-2">
+            Database: <span class="font-weight-bold">  {{ selectedDB.db }}</span>
+        </div>
+    <div class="shadow table-responsive">
+        <table id="serverDetails" name="serverDetails" class="shadow table table-responsive table-bordered mb-2" [ngClass]="{'table-dark': !darkMode, 'table-success': darkMode}">
+            <thead class="shadow" [ngClass]="{'table-dark': !darkMode, 'table-success': darkMode}">
+                <tr>
+                    <th scope="col" class="text-center">Application</th>
+                    <th scope="col" class="text-center">Application Server Name</th>
+                </tr>
+            </thead>
+            <tbody class="shadow" [ngClass]="{'table-dark': darkMode, 'table-light': !darkMode}">
+                <tr>
+                    <th scope="row">Front Office / SOAP Webservice</th>
+                    <td>{{ selectedDB.foHost }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Back Office / RESTFul Webservice</th>
+                    <td>{{ selectedDB.boAppHost }}</td>
+                </tr>
+                <tr *ngIf="selectedDB.jmHost">
+                    <th scope="row">JumpMind</th>
+                    <td>{{ selectedDB.jmHost }}</td>
+                </tr>
+                <tr [ngClass]="{'table-dark': !darkMode, 'table-success': darkMode}">
+                    <th scope="row" class="shadow text-center font-weight-bold">Application</th>
+                    <th scope="row" class="shadow text-center font-weight-bold">URL</th>
+                </tr>
+                <tr>
+                    <th scope="row">Front Office</th>
+                    <td>
+                        <a href="{{ prefix }}{{ selectedDB.foHost }}:{{ selectedDB.foPort }}{{ urlDetails.fo }}" target="_blank">
+                            {{ prefix }}{{ selectedDB.foHost }}:{{ selectedDB.foPort }}{{ urlDetails.fo }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">SOAP Webservice</th>
+                    <td>
+                        <a href="{{ prefix }}{{ selectedDB.foHost }}:{{ selectedDB.foPort }}{{ urlDetails.ws }}" target="_blank">
+                            {{ prefix }}{{ selectedDB.foHost }}:{{ selectedDB.foPort }}{{ urlDetails.ws }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Back Office</th>
+                    <td>
+                        <a href="{{ prefix }}{{ selectedDB.boHost }}:{{ selectedDB.boPort }}{{ urlDetails.bo }}" target="_blank">
+                            {{ prefix }}{{ selectedDB.boHost }}:{{ selectedDB.boPort }}{{ urlDetails.bo }}
+                        </a>
+                    </td>
+                </tr>
+                <tr *ngIf="selectedDB.jmHost">
+                    <th scope="row">JumpMind</th>
+                    <td>
+                        <a href="{{ prefix }}{{ selectedDB.jmHost }}:{{ selectedDB.jmPort }}{{ urlDetails.jm }}" target="_blank">
+                            {{ prefix }}{{ selectedDB.jmHost }}:{{ selectedDB.jmPort }}{{ urlDetails.jm }}
+                        </a>
+                    </td>
+                </tr>
+                <tr [ngClass]="{'table-dark': !darkMode, 'table-success': darkMode}">
+                    <th scope="row" class="shadow text-center font-weight-bold">Application</th>
+                    <th scope="row" class="shadow text-center font-weight-bold">Log Path</th>
+                </tr>
+                <tr>
+                    <th scope="row">Front Office</th>
+                    <td>{{ selectedDB.foLog }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">SOAP Webservice</th>
+                    <td>{{ selectedDB.wsLog }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Back Office / RESTFul Webservice</th>
+                    <td>{{ selectedDB.boLog }}</td>
+                </tr>
+                <tr *ngIf="selectedDB.jmLog">
+                    <th scope="row">JumpMind</th>
+                    <td>{{ selectedDB.jmLog }}</td>
+                </tr>
+                <tr [ngClass]="{'table-dark': !darkMode, 'table-success': darkMode}">
+                    <th scope="row" class="shadow text-center font-weight-bold">Application</th>
+                    <th scope="row" class="shadow text-center font-weight-bold">Data Reload URL</th>
+                </tr>
+                <tr>
+                    <th scope="row">Elastic</th>
+                    <td>
+                        <a href="{{ prefix }}{{ selectedDB.boHost }}:{{ selectedDB.boPort }}{{ urlDetails.es }}" target="_blank">
+                            {{ prefix }}{{ selectedDB.boHost }}:{{ selectedDB.boPort }}{{ urlDetails.es }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" rowspan="2">Front Office</th>
+                    <td>
+                        <a href="{{ prefix }}{{ selectedDB.foHost }}:{{ selectedDB.foPort }}{{ urlDetails.drLogin }}" target="_blank">
+                            {{ prefix }}{{ selectedDB.foHost }}:{{ selectedDB.foPort }}{{ urlDetails.drLogin }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="{{ prefix }}{{ selectedDB.foHost }}:{{ selectedDB.foPort }}{{ urlDetails.dr }}" target="_blank">
+                            {{ prefix }}{{ selectedDB.foHost }}:{{ selectedDB.foPort }}{{ urlDetails.dr }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">SOAP Webservice</th>
+                    <td>
+                        <a href="{{ prefix }}{{ selectedDB.foHost }}:{{ selectedDB.foPort }}{{ urlDetails.wsReload }}" target="_blank">
+                            {{ prefix }}{{ selectedDB.foHost }}:{{ selectedDB.foPort }}{{ urlDetails.wsReload }}
+                        </a>
+                    </td>
+                </tr>
+                <tr *ngIf="selectedDB.jmHost">
+                    <th scope="row">JumpMind</th>
+                    <td>
+                        <a href="{{ prefix }}{{ selectedDB.jmHost }}:{{ selectedDB.jmPort }}{{ urlDetails.wsReload }}" target="_blank">
+                            {{ prefix }}{{ selectedDB.jmHost }}:{{ selectedDB.jmPort }}{{ urlDetails.wsReload }}
+                        </a>
+                    </td>
+                </tr>
+                <tr [ngClass]="{'table-dark': !darkMode, 'table-success': darkMode}" *ngIf="selectedDB.tns && selectedDB.tns.length > 0" >
+                    <th scope="row" class="text-center font-weight-bold" colspan="2">DB Connection Details</th>
+                </tr>
+                <tr *ngFor="let tns of selectedDB?.tns">
+                    <td colspan="2">{{ tns }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="shadow card card-body" *ngIf="!selectedDB || selectedDB===null" [class.bg-moon-card]="darkMode">
+    No Environment Selected
+</div>

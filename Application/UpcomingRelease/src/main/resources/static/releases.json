@@ -1,0 +1,72 @@
+[
+	{
+		"id": "1",
+		"citrixId": "20_12_500",
+		"name": "December Release",
+		"prodLike": true,
+		"backend": "ITE2",
+		"devDB": {
+			"rhs": "RHSD501",
+			"lfo": "RSKD501",
+			"vwi": "PRTD501",
+			"rai": "TELD501"
+		},
+		"branch": {
+			"fo": "RHS_FO_20.12.5",
+			"ws": "RHS_WS_20.12.5",
+			"bo": "RHS_RMSBO_20.10.5",
+			"rest": "RHS_RESTAPI_20.12.5",
+			"db": "RHS_RMSDB_20.12.5"
+		},
+		"date": "2020-12-13"
+	},
+	{
+		"id": "3",
+		"citrixId": "21_01_500",
+		"name": "January Release",
+		"prodLike": false,
+		"backend": "ITE3",
+		"testDB": {
+			"rhs": "RMST401",
+			"lfo": "RSKT301",
+			"vwi": "PRTT104",
+			"rai": "TELT401"
+		},
+		"branch": {
+			"fo": "RHS_FO_21.1.5",
+			"ws": "RHS_WS_20.12.5",
+			"bo": "RHS_RMSBO_21.1.5",
+			"rest": "RHS_RESTAPI_21.1.5",
+			"db": "RHS_RMSDB_21.1.5"
+		},
+		"date": "2021-01-24"
+	},
+	{
+		"id": "2",
+		"citrixId": "21_01_500",
+		"name": "January Release",
+		"prodLike": false,
+		"backend": "ITE2",
+		"devDB": {
+			"rhs": "RHSD201",
+			"lfo": "RSKD201",
+			"vwi": "PRTD201",
+			"rai": "TELD201"
+		},
+		"testDB": {
+			"rhs": "RMST201",
+			"lfo": "RSKT201",
+			"vwi": "PRTT201",
+			"rai": "TELT201"
+		},
+		"branch": {
+			"fo": "RHS_FO_21.1.5",
+			"ws": "RHS_WS_20.12.5",
+			"bo": "RHS_RMSBO_21.1.5",
+			"rest": "RHS_RESTAPI_21.1.5",
+			"db": "RHS_RMSDB_21.1.5"
+		},
+		"date": "2021-01-05",
+		"comments": "Jan 5th pilot release and 10th actual release"
+	}
+]

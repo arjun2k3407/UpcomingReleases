@@ -1,0 +1,8 @@
+<div [class.bg-moon]="darkMode" style="width: 100%; min-height: 100%; max-height: max-content; min-width: 100%; max-width: max-content;">
+  <app-navbar></app-navbar>
+  <div class="container d-flex flex-column mb-3" [class.bg-moon]="darkMode" style="width: 100%; min-height: 100%; max-height: max-content;">
+    <flash-messages></flash-messages>
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer></app-footer>
+</div>

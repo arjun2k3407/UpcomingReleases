@@ -1,0 +1,161 @@
+<div class="row" [class.bg-moon]="darkMode">
+    <div class="col-md-12">
+        <a [routerLink]="['/menu']" routerLinkActive="router-link-active" class="btn text-magenta">
+            <i class="fa fa-arrow-circle-o-left"></i> Back to Menu Details
+        </a>
+    </div>
+</div>
+<div *ngIf="(!loaded || menu == undefined); else menuItemUpdateTemplate" class="card-body" [class.bg-moon]="darkMode">
+    <h5>Problem retrieving menu details</h5>
+</div>
+<ng-template #menuItemUpdateTemplate>
+    <div class="shadow card mb-5 rounded-3" [class.bg-moon-card]="darkMode">
+        <div class="shadow rounded-3 card card-header bg-magenta text-light">
+            <h3>Update Menu Item</h3>
+        </div>
+        <div class="shadow rounded-3 card-body">
+            <form #menuItemUpdateForm="ngForm" (ngSubmit)="onSubmit(menuItemUpdateForm)">
+                <div class="form-group mb-3">
+                    <label for="type">Menu Item Type</label>
+                    <select 
+                        class="shadow rounded-pill form-control form-select" 
+                        name="type" 
+                        id="type"
+                        [(ngModel)]="item.type"
+                        #menuItemType="ngModel"
+                        [ngClass]="{'is-invalid': menuItemType.errors && menuItemType.touched, 'bg-moon-card': darkMode, 'arrow-white': darkMode}"
+                        required
+                    >
+                        <option value="item">ITEM</option>
+                        <option value="divider">DIVIDER</option>
+                        <option value="header">HEADER</option>
+                    </select>
+                    <div [hidden]="!menuItemType.errors?.required" class="invalid-feedback" >
+                        Type is required
+                    </div>
+                </div>
+                <div class="form-group mb-3" *ngIf="item.type!=='divider'">
+                    <label for="name">Display Name</label>
+                    <input 
+                        type="text" 
+                        class="shadow rounded-pill form-control"
+                        placeholder="Name"
+                        name="name" 
+                        id="name"
+                        #itemName="ngModel"
+                        [(ngModel)]="item.name"
+                        [ngClass]="{'is-invalid': itemName.errors && itemName.touched, 'bg-moon-card': darkMode}"
+                        required
+                    >
+                    <div [hidden]="!itemName.errors?.required" class="invalid-feedback" >
+                        Name is required
+                    </div>
+                </div>
+                <div class="form-group mb-3" *ngIf="item.type==='item'">
+                    <label for="link">Url Link</label>
+                    <input 
+                        type="text" 
+                        class="shadow rounded-pill form-control"
+                        placeholder="http//.."
+                        name="link" 
+                        id="link"
+                        #itemLink="ngModel"
+                        [(ngModel)]="item.link"
+                        [ngClass]="{'is-invalid': itemLink.errors && itemLink.touched, 'bg-moon-card': darkMode}"
+                        required
+                    >
+                    <div [hidden]="!itemLink.errors?.required" class="invalid-feedback" >
+                        Url is required
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <div class="form-check form-switch">
+                        <input 
+                            type="checkbox" 
+                            class="form-check-input" 
+                            id="moveItem"
+                            name="moveItem"
+                            (change)="onMoveMenuToggle()"
+                            [(ngModel)]="moveItem"
+                        >
+                        <label class="form-check-label" for="moveItem">Move this item under another Menu</label>
+                    </div>
+                </div>
+                <div class="form-group mb-3" *ngIf="moveItem">
+                    <label for="parentMenu">Menu</label>
+                    <select 
+                        class="shadow rounded-pill form-control form-select" 
+                        name="parentMenu" 
+                        id="parentMenu"
+                        [(ngModel)]="item.parentMenu"
+                        (change)="onParentMenuChange()"
+                        #menuParentMenu="ngModel"
+                        [ngClass]="{'is-invalid': menuParentMenu.errors && menuParentMenu.touched, 'bg-moon-card': darkMode, 'arrow-white': darkMode}"
+                        required
+                    >
+                        <option *ngFor="let menu of menus" value="{{ menu.header }}">{{ menu.header }}</option>
+                    </select>
+                    <div [hidden]="!menuParentMenu.errors?.required" class="invalid-feedback" >
+                        Menu is required
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <div class="form-check form-check-inline" *ngIf="showSamePosition">
+                        <input 
+                            type="radio" 
+                            class="shadow form-check-input" 
+                            id="positionSame" 
+                            name="position"
+                            [(ngModel)]="position" 
+                            [value]="positionSame"
+                        >
+                        <label class="form-check-label" for="positionSame">Same Item Position</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input 
+                            type="radio" 
+                            class="shadow form-check-input" 
+                            id="positionFirst" 
+                            name="position"
+                            [(ngModel)]="position" 
+                            [value]="positionFirst"
+                        >
+                        <label class="form-check-label" for="positionFirst">Make this First Item</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input 
+                            type="radio" 
+                            class="shadow form-check-input" 
+                            id="positionAfter" 
+                            name="position"
+                            [(ngModel)]="position" 
+                            [value]="positionAfter"
+                        >
+                        <label class="form-check-label" for="positionAfter">Move this Item After</label>
+                    </div>
+                </div>
+                <div class="form-group mb-3" *ngIf="position==='a'">
+                    <label for="prevId">Item</label>
+                    <select 
+                        class="form-control shadow rounded-pill form-select" 
+                        name="prevId" 
+                        id="prevId"
+                        [(ngModel)]="prevId"
+                        #menuItemPrevId="ngModel"
+                        [ngClass]="{'is-invalid': menuItemPrevId.errors && menuItemPrevId.touched, 'bg-moon-card': darkMode, 'arrow-white': darkMode}"
+                        required
+                    >
+                        <option *ngFor="let item of items" value="{{ item.id }}">{{ item.type === 'divider'? 'DIVIDER': item.type === 'header'? 'HEADER - '+item.name: item.name }}</option>
+                    </select>
+                    <div [hidden]="!menuItemPrevId.errors?.required" class="invalid-feedback" >
+                        Menu Item is required
+                    </div>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <input type="submit" value="Update" class="shadow rounded-pill btn bg-magenta text-light">
+                    <a class="shadow rounded-pill btn bg-secondary text-light" [routerLink]="['/menu']" routerLinkActive="router-link-active" >Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>
